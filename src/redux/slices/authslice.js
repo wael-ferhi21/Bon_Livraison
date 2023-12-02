@@ -1,12 +1,5 @@
-import {  createSlice } from '@reduxjs/toolkit';
-
-
-import { registerUser ,loginUser} from '../actions/authActions'
-
-const token = localStorage.getItem('token')
-  ? localStorage.getItem('token'): null
-
-
+import { createSlice } from '@reduxjs/toolkit';
+import { registerUser } from '../actions/authActions'
 
 // Slice with reducers for authentication using builder callback
 const authSlice = createSlice({
@@ -19,24 +12,13 @@ const authSlice = createSlice({
     error: null,
   },
   reducers: {
-    // Additional reducers if needed
+    setUser(state, action) {
+      state.user = action.payload;
+      state.isAuthenticated = true;
+    }
   },
   extraReducers: (builder) => {
     builder
-      .addCase(loginUser.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(loginUser.fulfilled, (state, action) => {
-        state.loading = false;
-        state.isAuthenticated = true;
-        state.user = action.payload.user;
-        state.token = action.payload.token;
-      })
-      .addCase(loginUser.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload ? action.payload.message : 'Login failed';
-      })
       .addCase(registerUser.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -53,6 +35,6 @@ const authSlice = createSlice({
       });
   },
 });
-
+export const { setUser } = authSlice.actions;
 export default authSlice.reducer;
 

@@ -1,59 +1,40 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginUser } from '../redux/actions/authActions';
 import { useForm } from 'react-hook-form';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {  toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import '../Login/Login.css';
 import { Spinner } from 'react-bootstrap';
-
+import { isAuthenticated, loginUser } from '../services/userService';
+import { setUser } from '../redux/slices/authslice'; 
 
 function Login() {
-  
-  const failureNotify = () => toast.error('Vérifiez vos données !');
-  const successNotify= ()=>toast.success('Connexion réussie')
- 
+  // TODO: change state => store or s
   const loading = useSelector((state) => state.auth.loading);
   const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
-  const { register, handleSubmit, formState: { errors }, reset } = useForm();
-
+  const { register, handleSubmit, reset } = useForm();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (user) {
-     
-      navigate('/home');
-    }
-  }, [navigate, user]);
-
-
   const onSubmit = async (data) => {
-    if (!errors.email && !errors.password &&!loading) {
-     
-        await dispatch(loginUser(data));
-        reset();
-        successNotify();
-        
-      } else{
-        failureNotify();
-      }
+    const { email, password } = data;
+    
+    const loggedUser = await loginUser(email, password, navigate);
+    if (loggedUser) {
+      dispatch(setUser(loggedUser));
+    }
+    else {
+      toast.error('error occured, try again !');
+    }
   };
-
-
-  
-  
-  
-  
-  
 
   return (
     <div className="container-login">
-    
-<div className="card">
+
+      <div className="card">
         <div className="card-image">
           <img src="" alt="" className="logo" />
         </div>
