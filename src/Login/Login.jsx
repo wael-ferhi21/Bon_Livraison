@@ -14,7 +14,7 @@ import { setUser } from '../redux/slices/authslice';
 function Login() {
   // TODO: change state => store or s
   const loading = useSelector((state) => state.auth.loading);
-  const user = useSelector((state) => state.auth.user);
+ 
   const dispatch = useDispatch();
   const { register, handleSubmit, reset } = useForm();
   const navigate = useNavigate();
@@ -24,10 +24,9 @@ function Login() {
     
     const loggedUser = await loginUser(email, password, navigate);
     if (loggedUser) {
-      dispatch(setUser(loggedUser));
-    }
-    else {
-      toast.error('error occured, try again !');
+      dispatch(setUser(loggedUser)); // Assuming loggedUser has the user details including ID
+    } else {
+      toast.error('Error occurred, try again!');
     }
   };
 
@@ -63,9 +62,3 @@ function Login() {
 }
 
 export default Login;
-
-
-
-
-
-

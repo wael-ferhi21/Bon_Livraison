@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import InfoDest from '../InfoDest/InfoDest';
 import InfoColis from '../InfoColis/InfoColis';
 import NavBar from '../NavBar/NavBar';
@@ -10,7 +10,7 @@ function AddBL() {
   const [destinataireId, setDestinataireId] = useState(null);
   const [colisId, setColisId] = useState(null);
   const dispatch = useDispatch();
-  const userId = localStorage.getItem('userId');
+  const userId = useSelector((state) => state.auth.user.id);
 
   const handleColisId = (id) => {
     setColisId(id);
@@ -58,4 +58,3 @@ function AddBL() {
 }
 
 export default AddBL;
-
