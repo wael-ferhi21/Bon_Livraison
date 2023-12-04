@@ -3,14 +3,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import InfoDest from '../InfoDest/InfoDest';
 import InfoColis from '../InfoColis/InfoColis';
 import NavBar from '../NavBar/NavBar';
-import { createBl } from '../redux/actions/blActions'; // Import the action from your slice or file
+
+import { generatePdf } from '../redux/actions/pdfActions';
 import '../AddBL/AddBL.css';
+
 
 function AddBL() {
   const [destinataireId, setDestinataireId] = useState(null);
   const [colisId, setColisId] = useState(null);
   const dispatch = useDispatch();
-  const userId = useSelector((state) => state.auth.user.id);
+  const userId = useSelector((state) => state.auth.user?.id);
 
   const handleColisId = (id) => {
     setColisId(id);
@@ -20,28 +22,23 @@ function AddBL() {
     setDestinataireId(id);
   };
 
-  const createBLWithIds = () => {
-    try {
-      console.log('UserID:', userId);
-      console.log('Destinataire ID:', destinataireId);
-      console.log('Colis ID:', colisId);
-  
-      if (userId && destinataireId && colisId) {
-        const blData = {
-          refBl: 'YourRefBl',
-          date: new Date(),
-        };
-  
-        dispatch(createBl({ idUser: userId, idColis: colisId, id: destinataireId, createBlDto: blData }));
-        console.log('success')
-      } else {
-        console.error('Missing user ID or IDs for BL creation');
+  const generatePdfFile = async () => {
+    if (userId && destinataireId && colisId) {
+      console.log('user',userId);
+      console.log('dest',destinataireId);
+      console.log('coils',colisId);
+      try {
+        // Dispatch the generatePdf action passing the IDs
+        dispatch(generatePdf({ idDest: destinataireId,idUser: userId, idColis: colisId }));
+      } catch (error) {
+        console.error('Error generating PDF:', error);
+        // Handle errors appropriately
       }
-    } catch (error) {
-      console.error('Error creating BL:', error);
+    } else {
+      console.error('Missing user ID or IDs for PDF generation');
+      // Handle missing IDs appropriately
     }
   };
-  
 
   return (
     <div>
@@ -49,7 +46,7 @@ function AddBL() {
       <InfoDest passId={handleDestId} />
       <InfoColis passId={handleColisId} />
       <div className='validation'>
-        <button type="button" className='btnv' onClick={createBLWithIds}>
+        <button type="button" className='btnv' onClick={generatePdfFile}>
           Valider
         </button>
       </div>
