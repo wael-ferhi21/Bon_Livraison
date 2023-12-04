@@ -9,9 +9,10 @@ import '../AddBL/AddBL.css';
 function AddBL() {
   const [destinataireId, setDestinataireId] = useState(null);
   const [colisId, setColisId] = useState(null);
+  const[blId,setBlId]=useState(null);
   const dispatch = useDispatch();
-  const userId = useSelector((state) => state.auth.user.id);
-
+  const userId = useSelector((state) => state.auth.user?.id);
+  
   const handleColisId = (id) => {
     setColisId(id);
   };
@@ -20,7 +21,7 @@ function AddBL() {
     setDestinataireId(id);
   };
 
-  const createBLWithIds = () => {
+  const createBLWithIds = async() => {
     try {
       console.log('UserID:', userId);
       console.log('Destinataire ID:', destinataireId);
@@ -34,6 +35,9 @@ function AddBL() {
   
         dispatch(createBl({ idUser: userId, idColis: colisId, id: destinataireId, createBlDto: blData }));
         console.log('success')
+        console.log('blref',blData);
+       
+       
       } else {
         console.error('Missing user ID or IDs for BL creation');
       }
