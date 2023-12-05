@@ -13,7 +13,7 @@ function Home() {
   <div className='home'>
         <NavBar />
         <div>
-        <Link to='/bl/:idUser/:idColis/:id/add'>
+        <Link to="/bl/:idUser/createbl">
         <Button className='btn-home'> 
         <p>Ajouter un BL</p> 
         <BsClipboardPlus  className='icon'/>

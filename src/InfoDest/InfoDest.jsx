@@ -1,39 +1,25 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React from 'react';
 import { useForm } from 'react-hook-form';
-import { createDestinataire } from '../redux/actions/destActions'
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import '../InfoDest/InfoDest.css';
 
-
-function InfoDest(props) {
-  const dispatch = useDispatch();
+function InfoDest({ onSubmit }) {
   const { register, handleSubmit } = useForm();
-  const [createdDestinataireId, setCreatedDestinataireId] = useState(null);
 
-  const onSubmit = async (data) => {
-    try {
-      const id = await dispatch(createDestinataire(data));
-      props.passId(id); // Pass the created ID to the parent component
-      setCreatedDestinataireId(id);
-      console.log({ id });
-    } catch (error) {
-      console.error('Failed to create destinataire:', error);
-    }
+  const onSubmitDest = (data) => {
+    onSubmit(data); // Pass form data up to the parent component
   };
-
 
   return (
     <div className='container-dest'>
-      <Form onSubmit={handleSubmit(onSubmit)}>
+      <Form onSubmit={handleSubmit(onSubmitDest)}>
         <Form.Label className='saisie'>Saisir ici les données de votre destinataire :</Form.Label>
         <Row className="mb-3">
           <Form.Group as={Col} md="4" controlId="nom">
             <Form.Label>Nom</Form.Label>
             <Form.Control
-              {...register('nom', { required: true })}
+              {...register('nomDest', { required: true })}
               type="text"
               placeholder="Nom"
               required
@@ -43,7 +29,7 @@ function InfoDest(props) {
             <Form.Label>Téléphone</Form.Label>
             <Form.Control
               {...register('numTelephone', { required: true })}
-              type="number"
+              type="tel"
               placeholder="Téléphone"
               required
             />
@@ -85,4 +71,3 @@ function InfoDest(props) {
 }
 
 export default InfoDest;
-

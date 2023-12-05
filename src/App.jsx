@@ -24,7 +24,7 @@ function App() {
             <Home />
           </ProtectedRoute>
         } />
-        <Route path="/bl/:idUser/:idColis/:id/add" element={
+       <Route path="/bl/:idUser/createbl" element= {
           <ProtectedRoute>
             <AddBL />
           </ProtectedRoute>

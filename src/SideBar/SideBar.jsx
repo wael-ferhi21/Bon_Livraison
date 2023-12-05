@@ -7,7 +7,7 @@ import { SiMicrosoftexcel } from "react-icons/si";
 export const SideBar=[
     {
         title:'Ajouter un bon de livraison',
-        path:'/addbl',
+        path:'/bl/:idUser/createbl',
         icon: <BsClipboardPlus />,
        
         cName:'nav-text'

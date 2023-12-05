@@ -1,39 +1,31 @@
-import BASE_URL from '../../services/apiConfig';
 import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import BASE_URL from '../../services/apiConfig';
 
-
-
-// Define the async thunk for creating a BL
-export const createBl = createAsyncThunk(
-  'bl/createBl',
-  async ({ idUser, idColis, id, createBlDto }) => {
+export const createBL = createAsyncThunk(
+  'bl/createBL',
+  async ({ userId, blData }, { rejectWithValue }) => {
     try {
-      const response = await axios.post(
-        `${BASE_URL}/bl/${userId}/${colisId}/${destinataireId}/createbl`,
-        
-        createBlDto
-      );
-      return response.data;
+      const response = await axios.post(`${BASE_URL}/bl/${userId}/createbl`, blData);
+      return response.data; // Assuming the response contains the created BL data
     } catch (error) {
-      throw error;
+      return rejectWithValue(error.response.data); // Custom data handling for rejection
     }
   }
 );
-  // Define the async thunk for fetching all BLs
-  export const fetchBl = createAsyncThunk('bl/fetchBl', async () => {
-    const response = await axios.get(`${BASE_URL}/bl`);
-    return response.data;
-  });
-  // fecthing a bl by id
-  export const fetchBlById = createAsyncThunk('bl/fetchBlById', async (id) => {
-    const response = await axios.get(`${BASE_URL}/bl/${id}`);
-    return response.data;
-  });
 
-  
-  //deleting with an id 
-  export const deleteBl = createAsyncThunk('bl/deleteBl', async (id) => {
-    await axios.delete(`${BASE_URL}/bl/${id}`);
-    return id; // Return the deleted BL ID if successful
-  });
+export const fetchBLById = createAsyncThunk(
+  'bl/fetchBLById',
+  async (blId, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${BASE_URL}/bl/${blId}`);
+      return response.data; // Assuming the response contains the requested BL data
+    } catch (error) {
+      return rejectWithValue(error.response.data); // Custom data handling for rejection
+    }
+  }
+);
+
+
+
+
